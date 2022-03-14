@@ -11,7 +11,7 @@ class discuri {
     int nr_vanzari_lunar;
     int pret;
 public:
-    discuri() {nume_disc=""; nume_trupa=""; an_aparitie=0; nr_vanzari_lunar=0; pret=0;};
+    discuri() =default;
     discuri(const string& nume_disc_, const string& nume_trupa_, int an_aparitie_, int nr_vanzari_lunar_, int pret_): nume_disc{nume_disc_}, nume_trupa{nume_trupa_}, an_aparitie{an_aparitie_}, nr_vanzari_lunar{nr_vanzari_lunar_}, pret{pret_}{}
     friend ostream& operator<<(ostream& os, const discuri& d) {
         os<<"Numele discului: "<<d.nume_disc<<", numele trupei: "<<d.nume_trupa<<", anul aparitiei: "<<d.an_aparitie<<", numarul de vanzari ale discului: "<<d.nr_vanzari_lunar<<", pretul discului: "<<d.pret;
