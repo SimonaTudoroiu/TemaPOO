@@ -43,7 +43,7 @@ class trupa{
     discuri disc;
 
 public:
-    trupa() { nume=""; solist=""; an_infiintare=0; nr_albume=0; discuri d1; disc=d1;};
+    trupa() =default ;
     trupa(const string& nume_, const string& solist_, int an_infiintare_, int nr_albume_, const discuri& disc_): nume{nume_}, solist{solist_}, an_infiintare{an_infiintare_}, nr_albume{nr_albume_}, disc{disc_}{}
     trupa(const trupa& other) : nume{other.nume}, solist{other.solist}, an_infiintare{other.an_infiintare}, nr_albume{other.nr_albume}, disc{other.disc} {}
     trupa& operator=(const trupa& other) {
@@ -77,7 +77,7 @@ class piesa {
     string nume_trupa;
     discuri disc;
 public:
-    piesa() { nume_piesa=""; nume_trupa=""; discuri d1; disc=d1;};
+    piesa() =default ;
     piesa(const string& nume_piesa_, const string& nume_trupa_, const discuri& disc_): nume_piesa{nume_piesa_}, nume_trupa{nume_trupa_}, disc{disc_} {}
     friend ostream& operator<<(ostream& os, const piesa& p) {
         os<<"Numele piesei: "<<p.nume_piesa<<", numele trupei: "<<p.nume_trupa<<", discul in care apare piesa: "<<p.disc.getNumeDisc();
