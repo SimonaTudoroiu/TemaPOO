@@ -66,7 +66,7 @@ public:
     friend class discuri;
     bool cumparare_dupa_an(int an_infiintare_, int bani ){
         if (an_infiintare_<=an_infiintare)
-            if(disc.poate_cumpara_discul(bani)==true)
+            if(disc.poate_cumpara_discul(bani))
                 return true;
         return false;
     }
@@ -152,7 +152,7 @@ int main()
     cout<<endl<<"Introduceti numarul dorit: ";
     cin>>k;
     system("cls");
-    unsigned long long n,i;
+    unsigned long long i;
     switch (k) {
         case 1: {
             cout << "Detalii despre discurile bagate in baza noastra de date: " << endl;
@@ -174,6 +174,7 @@ int main()
         }
         case 4: {
             cout << "Alegeti un an pentru care ati vrea sa stiti ce discuri au aparut atunci:";
+            unsigned long long n;
             cin >> n;
             cout << endl << "Aceste discuri au aparut in anul selectat:" << endl;
             for (i = 0; i < discuri_.size(); i++)
@@ -206,11 +207,11 @@ int main()
         }
         case 8: {
             cout << endl<< "Introduceti un an si un buget pentru a verifica daca va puteti cumpara un disc aparut cel tarziu in acel an:";
-            int an1, buget1;
+            unsigned an1, buget1;
             cin >> an1 >> buget1;
             cout << "Poti cumpara discurile: ";
             for (i = 0; i < trupa_.size(); i++)
-                if (trupa_[i].cumparare_dupa_an(an1, buget1) == true)
+                if (trupa_[i].cumparare_dupa_an(an1, buget1))
                     cout << discuri_[i].getNumeDisc() << " ";
             break;
         }
