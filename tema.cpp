@@ -2,7 +2,9 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <fstream>
 using namespace std;
+ifstream fin("date.txt");
 class discuri {
     string nume_disc;
     string nume_trupa;
@@ -149,7 +151,7 @@ int main()
     cout<<"8 -> Gestionare discuri dupa an si un buget dat."<<endl;
     int k;
     cout<<endl<<"Introduceti numarul dorit: ";
-    cin>>k;
+    fin>>k;
     unsigned long long i;
     switch (k) {
         case 1: {
@@ -173,7 +175,7 @@ int main()
         case 4: {
             cout << "Alegeti un an pentru care ati vrea sa stiti ce discuri au aparut atunci:";
             int n;
-            cin >> n;
+            fin >> n;
             cout << endl << "Aceste discuri au aparut in anul selectat:" << endl;
             for (i = 0; i < discuri_.size(); i++)
                 discuri_[i].afisare_discuri_aparute_in_anul_n(n);
@@ -182,7 +184,7 @@ int main()
         case 5: {
             cout << endl << "Introduceti un nume de trupa pentru a se afisa detalii despre discurile lor:";
             string nt;
-            cin >> nt;
+            fin >> nt;
             for (i = 0; i < trupa_.size(); i++)
                 trupa_[i].gestionare_discuri(nt);
             break;
@@ -190,7 +192,7 @@ int main()
         case 6: {
             cout << "Introduceti numele unei piese pentru a va afisa detalii despre discul in care aceasta apare:";
             string np;
-            cin >> np;
+            fin >> np;
             for (i = 0; i < piesa_.size(); i++)
                 piesa_[i].gestionare_piese(np);
             break;
@@ -198,7 +200,7 @@ int main()
         case 7: {
             cout<< "Introduceti numele unei piese pentru a va oferi informatii detaliate despre castigurile discului in care apare:";
             string np2;
-            cin >> np2;
+            fin >> np2;
             for (i = 0; i < piesa_.size(); i++)
                 piesa_[i].gestionare_discuri_dupa_piesa(np2);
             break;
@@ -206,7 +208,7 @@ int main()
         case 8: {
             cout << endl<< "Introduceti un an si un buget pentru a verifica daca va puteti cumpara un disc aparut cel tarziu in acel an:";
             unsigned an1, buget1;
-            cin >> an1 >> buget1;
+            fin >> an1 >> buget1;
             cout << "Poti cumpara discurile: ";
             for (i = 0; i < trupa_.size(); i++)
                 if (trupa_[i].cumparare_dupa_an(an1, buget1))
