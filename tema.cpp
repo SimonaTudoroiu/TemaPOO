@@ -2,7 +2,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include <stdlib.h>
+#include "rlutil.h"
 using namespace std;
 class discuri {
     string nume_disc;
@@ -151,7 +151,7 @@ int main()
     int k;
     cout<<endl<<"Introduceti numarul dorit: ";
     cin>>k;
-    system("cls");
+    rlutil::cls();
     unsigned long long i;
     switch (k) {
         case 1: {
@@ -174,7 +174,7 @@ int main()
         }
         case 4: {
             cout << "Alegeti un an pentru care ati vrea sa stiti ce discuri au aparut atunci:";
-            unsigned long long n;
+            int n;
             cin >> n;
             cout << endl << "Aceste discuri au aparut in anul selectat:" << endl;
             for (i = 0; i < discuri_.size(); i++)
