@@ -2,7 +2,6 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include "rlutil.h"
 using namespace std;
 class discuri {
     string nume_disc;
@@ -151,7 +150,6 @@ int main()
     int k;
     cout<<endl<<"Introduceti numarul dorit: ";
     cin>>k;
-    rlutil::cls();
     unsigned long long i;
     switch (k) {
         case 1: {
