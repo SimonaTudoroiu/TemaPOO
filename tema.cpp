@@ -25,7 +25,7 @@ class disc {
     vector<piesa> piese;
 public:
     disc() =default;
-    disc(const string& nume_disc_, int an_aparitie_, int nr_vanzari_lunar_, int pret_, const vector<piesa> piese_): nume_disc{nume_disc_}, an_aparitie{an_aparitie_}, nr_vanzari_lunar{nr_vanzari_lunar_}, pret{pret_}, piese{piese_}{}
+    disc(const string& nume_disc_, int an_aparitie_, int nr_vanzari_lunar_, int pret_, const vector<piesa> &piese_): nume_disc{nume_disc_}, an_aparitie{an_aparitie_}, nr_vanzari_lunar{nr_vanzari_lunar_}, pret{pret_}, piese{piese_}{}
 
     friend ostream& operator<<(ostream& os, const disc& d) {
         os<<"Numele discului: "<<d.nume_disc<<", anul aparitiei: "<<d.an_aparitie<<", numarul de vanzari ale discului: "<<d.nr_vanzari_lunar<<", pretul discului: "<<d.pret<<"."<<endl;
@@ -75,7 +75,7 @@ class trupa{
     vector<disc> discuri;
 public:
     trupa() =default ;
-    trupa(const string& nume_, const string& solist_, int an_infiintare_, const vector<disc> discuri_): nume{nume_}, solist{solist_}, an_infiintare{an_infiintare_}, discuri{discuri_}{}
+    trupa(const string& nume_, const string& solist_, int an_infiintare_, const vector<disc> &discuri_): nume{nume_}, solist{solist_}, an_infiintare{an_infiintare_}, discuri{discuri_}{}
 
 
     trupa(const trupa& other) : nume{other.nume}, solist{other.solist}, an_infiintare{other.an_infiintare}{}
