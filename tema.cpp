@@ -78,11 +78,12 @@ public:
     trupa(const string& nume_, const string& solist_, int an_infiintare_, const vector<disc> &discuri_): nume{nume_}, solist{solist_}, an_infiintare{an_infiintare_}, discuri{discuri_}{}
 
 
-    trupa(const trupa& other) : nume{other.nume}, solist{other.solist}, an_infiintare{other.an_infiintare}{}
+    trupa(const trupa& other) : nume{other.nume}, solist{other.solist}, an_infiintare{other.an_infiintare}, discuri{other.discuri}{}
     trupa& operator=(const trupa& other) {
         nume = other.nume;
         solist = other.solist;
         an_infiintare = other.an_infiintare;
+        discuri = other.discuri;
         return *this;
     }
     ~trupa() {}
@@ -274,13 +275,14 @@ int main()
             break;
         }
         case 8: {
-            cout <<"Introduceti 2 dintre piesele voastre preferate si verificati daca exista un disc ce le include pe toate.";
+            cout <<"Introduceti piesele voastre preferate si verificati daca exista un disc ce le include pe toate. La final, introduceti caracterul '#'.";
             vector <string> piese_preferate1;
             string p;
-            for(i=0;i<2;i++)
+            cin>>p;
+            while(p!="#")
             {
-                cin>>p;
                 piese_preferate1.push_back(p);
+                cin>>p;
             }
             c1.exista_discul(piese_preferate1);
             break;
