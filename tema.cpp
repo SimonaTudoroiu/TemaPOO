@@ -4,13 +4,86 @@
 #include <fstream>
 using namespace std;
 ifstream fin("date.txt");
+class piesa {
+    string nume_piesa;
+    string nume_trupa;
+public:
+    piesa() { nume_piesa = "au inebunit salcamii"; nume_trupa="Metalica"; }
+    piesa(const string& nume_piesa_, const string& nume_trupa_): nume_piesa{nume_piesa_}, nume_trupa{nume_trupa_}{}
+    friend ostream& operator<<(ostream& os, const piesa& p) {
+        os<<"Numele piesei: "<<p.nume_piesa<<", numele trupei: "<<p.nume_trupa<<".";
+        return os;
+    }
+    const string& getNumePiesa() {return nume_piesa;}
+};
+
+class disc {
+    string nume_disc;
+    int an_aparitie{2000};
+    int nr_vanzari_lunar{100};
+    int pret{50};
+    vector<piesa> piese;
+public:
+    disc() { nume_disc= "the disc"; an_aparitie = 2000;nr_vanzari_lunar = 10; pret= 100;
+    for(unsigned long long i = 0;i<2;i++) {
+        piesa p1;
+        piese.push_back(p1);
+    }
+    }
+    disc(const string& nume_disc_, int an_aparitie_, int nr_vanzari_lunar_, int pret_, vector<piesa> piese_): nume_disc{nume_disc_}, an_aparitie{an_aparitie_}, nr_vanzari_lunar{nr_vanzari_lunar_}, pret{pret_}, piese{piese_}{}
+
+    friend ostream& operator<<(ostream& os, const disc& d) {
+        os<<"Numele discului: "<<d.nume_disc<<", anul aparitiei: "<<d.an_aparitie<<", numarul de vanzari ale discului: "<<d.nr_vanzari_lunar<<", pretul discului: "<<d.pret<<"."<<endl;
+        os<<"Piesele aparute pe discul "<<d.nume_disc<<" sunt:";
+        for(unsigned long long i=0; i<d.piese.size();i++)
+            os<<d.piese[i]<<" ";
+        return os;
+    }
+
+    const string& getNumeDisc(){ return nume_disc;}
+    int getPret(){ return pret;}
+    int getAn(){return an_aparitie;}
+    bool piese_in_disc(vector<string> piesele){
+        unsigned long long k=0;
+        for(unsigned long long i=0;i<piesele.size();i++)
+        {
+            int ok=0;
+            for(unsigned long long j=0;j<piese.size();j++)
+                if(piesele[i]==piese[j].getNumePiesa())
+                    ok=1;
+            if(ok==1)
+                k++;
+        }
+        if(k==piesele.size())
+            return true;
+        else
+            return false;
+    }
+    void afisare_discuri_aparute_in_anul_n (int an_){
+        if (an_==an_aparitie)
+            cout<<nume_disc<<" ";
+    }
+    void gestionare_piese_dupa_anul_discului(int an_){
+        if(an_==an_aparitie)
+            for(unsigned long long i=0;i<piese.size();i++)
+                cout<<piese[i]<<endl;
+    }
+    int profit_lunar () {
+        int profit;
+        profit=nr_vanzari_lunar*pret;
+        return profit;
+    }
+};
 class trupa{
     string nume;
     string solist;
-    int an_infiintare;
+    int an_infiintare{1900};
+    vector<disc> discuri;
 public:
     trupa() =default ;
-    trupa(const string& nume_, const string& solist_, int an_infiintare_): nume{nume_}, solist{solist_}, an_infiintare{an_infiintare_}{}
+    trupa(const string& nume_, const string& solist_, int an_infiintare_, vector<disc> discuri_): nume{nume_}, solist{solist_}, an_infiintare{an_infiintare_}, discuri{discuri_}{}
+
+
     trupa(const trupa& other) : nume{other.nume}, solist{other.solist}, an_infiintare{other.an_infiintare}{}
     trupa& operator=(const trupa& other) {
         nume = other.nume;
@@ -19,110 +92,81 @@ public:
         return *this;
     }
     ~trupa() {}
-    friend ostream& operator<<(ostream& os, const trupa& tr) {
+
+    const string& getNumeTrupa(){ return nume;}
+    friend ostream& operator<<(ostream& os,  trupa& tr) {
         os<<"Nume trupa: "<<tr.nume<<", an de infiintare al trupei: "<<tr.an_infiintare<<", solistul trupei: "<<tr.solist<<".";
+        for (unsigned long long i = 0;i<tr.discuri.size();i++)
+            os<<tr.discuri[i]<<' ';
         return os;
     }
-    const string& getNumeTrupa() const { return nume;}
-    int getAnInfiintare() const {return an_infiintare;}
 
-};
-
-class disc {
-    string nume_disc;
-    int an_aparitie;
-    int nr_vanzari_lunar;
-    int pret;
-    trupa tr;
-public:
-    disc() =default;
-    disc(const string& nume_disc_, int an_aparitie_, int nr_vanzari_lunar_, int pret_, const trupa& tr_): nume_disc{nume_disc_}, an_aparitie{an_aparitie_}, nr_vanzari_lunar{nr_vanzari_lunar_}, pret{pret_}, tr{tr_}{}
-    friend ostream& operator<<(ostream& os, const disc& d) {
-        os<<"Numele discului: "<<d.nume_disc<<", numele trupei: "<<d.tr.getNumeTrupa()<<", anul aparitiei: "<<d.an_aparitie<<", numarul de vanzari ale discului: "<<d.nr_vanzari_lunar<<", pretul discului: "<<d.pret;
-        return os;
-    }
-    const string& getNumeDisc() const { return nume_disc;}
-    void gestionare_discuri(const string& nume_){
-        if (nume_==tr.getNumeTrupa())
-            cout<<tr<<endl;
-    }
-    void afisare_discuri_aparute_in_anul_n (int an_){
-        if (an_==an_aparitie)
-            cout<<nume_disc<<" ";
-    }
-    bool poate_cumpara_discul (int n) {
-        if (n>=pret)
-            return true;
-        else
-            return false;
-    }
-    bool cumparare_dupa_an(int an_infiintare_, int bani ){
-        if (an_infiintare_<=tr.getAnInfiintare())
-            if(poate_cumpara_discul(bani))
+    bool verificare_disc(vector<string> piesele)
+    {
+        for(unsigned long long i=0;i<discuri.size();i++)
+            if(discuri[i].piese_in_disc(piesele)==true)
                 return true;
         return false;
+
     }
-    int profit_lunar () {
-        int profit;
-        profit=nr_vanzari_lunar*pret;
-        return profit;
+    void clasificare_trupa(){
+        int k=0;
+        for(unsigned long long i=0; i<discuri.size();i++)
+            k = k + discuri[i].profit_lunar()*12;
+        if(k > 10000)
+            cout<<"Trupa "<<nume<<" se afla printre trupele cu profitul cel mai mare provenit din vanzarea discurilor, acumuland "<<k<<" lei anual."<<endl;
+        else if(k> 5000)
+            cout<<"Trupa "<<nume<<" se afla printre trupele cu profit mediu provenit din vanzarea discurilor, acumuland "<<k<<" lei anual."<<endl;
+        else
+            cout<<"Trupa "<<nume<<" se afla printre trupele cu profit mic provenit din vanzarea discurilor, acumuland "<<k<<" lei anual."<<endl;
+    }
+};
+class cumparator{
+    int id_cumparator{1152};
+    int buget{150};
+    string nume;
+    string prenume;
+    string mail;
+    disc d;
+    trupa tr;
+public:
+    cumparator() = default;
+    cumparator(int id_cumparator_, int buget_, const string& nume_, const string& prenume_, const string& mail_, const disc& d_, const trupa& tr_): id_cumparator{id_cumparator_}, buget{buget_}, nume{nume_}, prenume{prenume_}, mail{mail_}, d{d_}, tr{tr_} {}
+
+    friend ostream &operator<<(ostream &os, const cumparator &cumparator) {
+        os << "Id-ul cumparatorului: " << cumparator.id_cumparator << ", buget: " << cumparator.buget << ", nume: "<< cumparator.nume << ", prenume: " << cumparator.prenume << ", mail: " << cumparator.mail<<".";
+        return os;
+    }
+    void poate_cumpara(){
+         if( d.getPret()<=buget)
+             cout<<"Cumparatorul "<<nume<<" "<<prenume<<" poate cumpara discul "<<d.getNumeDisc()<<". Se va trimite un mail de confirmare a comenzii la adresa "<<mail<<".";
+         else
+             cout<<"Cumparatorul "<<nume<<" "<<prenume<<" nu poate cumpara discul "<<d.getNumeDisc()<<". Se va trimite un mail infirmare a comenzii la adresa "<<mail<<".";
+    }
+    void exista_discul(vector <string> piese_preferate){
+        if(tr.verificare_disc(piese_preferate)==true)
+            cout<<"Exista discul cu piesele enumerate.";
+        else
+            cout<<"Nu exista discul cu piesele enumerate.";
     }
 };
 
-class piesa {
-    string nume_piesa;
-    string nume_trupa;
-    disc d;
-public:
-    piesa() =default ;
-    piesa(const string& nume_piesa_, const string& nume_trupa_, const disc& d_): nume_piesa{nume_piesa_}, nume_trupa{nume_trupa_}, d{d_} {}
-    friend ostream& operator<<(ostream& os, const piesa& p) {
-        os<<"Numele piesei: "<<p.nume_piesa<<", numele trupei: "<<p.nume_trupa<<", discul in care apare piesa: "<<p.d.getNumeDisc();
-        return os;
-    }
-    void gestionare_piese(const string& nume_piesa_){
-        if(nume_piesa_==nume_piesa)
-            cout<<d<<endl;
-    }
-    void gestionare_discuri_dupa_piesa ( const string& nume_piesa_) {
-        if (nume_piesa_ == nume_piesa) {
-            cout << "Numele trupei ce canta piesa este: " << nume_trupa << ".";
-            cout << " Numele discului in care apare piesa introdusa este:" << d.getNumeDisc() << ".";
-            cout << "Profitul lunar pe care discul il face este de " << d.profit_lunar()
-                 << " lei, iar implicit cel anual este de " << d.profit_lunar() * 12 << " lei.";
-            if (d.profit_lunar() >= 1500)
-                cout << "Discurile trupei se afla in topul celor mai vandute discuri.";
-        }
-    }
-};
+
+
 int main()
 {
-    vector <trupa> trupa_;
-    trupa t1{"trupa1","solist1",1969}, t2{"trupa2","solist2",2000}, t3{"trupa3","solist3",1990}, t4{"trupa4","solist4",1996},t5{"trupa5","solist5",2001}, t6{"trupa6","solist6",1989}, t7{"trupa7","solist7",1995}, t8{"trupa8","solist8",2005}, t9{"trupa9","solist9",2000}, t10{"trupa10","solist10",2004};
-    trupa_.push_back(t1);
-    trupa_.push_back(t2);
-    trupa_.push_back(t3);
-    trupa_.push_back(t4);
-    trupa_.push_back(t5);
-    trupa_.push_back(t6);
-    trupa_.push_back(t7);
-    trupa_.push_back(t8);
-    trupa_.push_back(t9);
-    trupa_.push_back(t10);
-    vector <disc> discuri_;
-    disc d1{"disc1",1976,1000,50, t1}, d2{"disc2", 1986, 500, 35, t2}, d3{"disc3",2000, 30, 10,t3}, d4{"disc4",1999,68,22,t4}, d5{"disc5",2005, 47, 17,t5}, d6{"disc6",2001,80,68,t6}, d7{"disc7",1998,44,32,t7}, d8{"disc8",2015,33,16,t8}, d9{"disc9",2002,100,60,t9}, d10{"disc10",2010,250,100,t10};
-    discuri_.push_back(d1);
-    discuri_.push_back(d2);
-    discuri_.push_back(d3);
-    discuri_.push_back(d4);
-    discuri_.push_back(d5);
-    discuri_.push_back(d6);
-    discuri_.push_back(d7);
-    discuri_.push_back(d8);
-    discuri_.push_back(d9);
-    discuri_.push_back(d10);
+
     vector <piesa> piesa_;
-    piesa p1{"piesa1","trupa1",d1}, p2{"piesa2","trupa2",d2}, p3{"piesa3","trupa3",d3}, p4{"piesa4","trupa4",d4}, p5{"piesa5","trupa5",d5}, p6{"piesa6","trupa6",d6}, p7{"piesa7","trupa7",d7}, p8{"piesa8","trupa8",d8}, p9{"piesa9","trupa9",d9}, p10{"piesa10","trupa10",d10};
+    piesa p1("piesa1","trupa1");
+    piesa p2("piesa2","trupa1");
+    piesa p3("piesa3","trupa1");
+    piesa p4("piesa4","trupa1");
+    piesa p5("piesa5","trupa1");
+    piesa p6("piesa6","trupa2");
+    piesa p7("piesa7","trupa2");
+    piesa p8("piesa8","trupa2");
+    piesa p9("piesa9","trupa3");
+    piesa p10("piesa10","trupa3");
     piesa_.push_back(p1);
     piesa_.push_back(p2);
     piesa_.push_back(p3);
@@ -133,33 +177,71 @@ int main()
     piesa_.push_back(p8);
     piesa_.push_back(p9);
     piesa_.push_back(p10);
+    vector <disc> discuri_;
+
+    disc d1("disc1",1976,1000,50,{p1,p2});
+    disc d2("disc2", 1986, 500, 35,{p3, p4, p5});
+    disc d3("disc3",2000, 30, 10,{p6, p7});
+    disc d4("disc4",1999,68,22, {p8});
+    disc d5("disc5",2005, 47, 17,{p9, p10});
+
+    discuri_.push_back(d1);
+    discuri_.push_back(d2);
+    discuri_.push_back(d3);
+    discuri_.push_back(d4);
+    discuri_.push_back(d5);
+
+    vector <trupa> trupa_;
+
+    trupa t1("trupa1","solist1",1969,{d1, d2});
+    trupa t2("trupa2","solist2",2000, {d3, d4});
+    trupa t3("trupa3","solist3",1990,{d5});
+
+    trupa_.push_back(t1);
+    trupa_.push_back(t2);
+    trupa_.push_back(t3);
+
+    vector <cumparator> cumparatori;
+
+    cumparator c1(1111,200,"nume1","prenume1","nume1.prenume1@yahoo.com",d1,t1);
+    cumparator c2(2222, 400, "nume2", "prenume2","nume2.prenume2@yahoo.com", d2, t1);
+    cumparator c3(3333, 50, "nume3", "prenume3","nume3.prenume3@yahoo.com", d3, t2);
+    cumparator c4(4444, 10, "nume4", "prenume4","nume4.prenume4@yahoo.com", d4, t2);
+    cumparator c5(5555, 5, "nume5", "prenume5","nume5.prenume5@yahoo.com", d5, t3);
+
+    cumparatori.push_back(c1);
+    cumparatori.push_back(c2);
+    cumparatori.push_back(c3);
+    cumparatori.push_back(c4);
+    cumparatori.push_back(c5);
+
     cout<<"Bine ati venit in lumea discografiei."<<endl;
     cout<<"Avem bagate in baza noastra de date o multitudine de discuri, trupe, si piese."<<endl;
     cout<<"Pentru a accesa un anumit serviciu, va rugam sa introduceti un numar de la 1 la 8, si sa apasati tasta enter."<<endl;
     cout<<"Optiunile sunt:"<<endl;
-    cout<<"1 -> Detalii despre discurile bagate in baza noastra de date."<<endl;
-    cout<<"2 -> Detalii despre trupele bagate in baza noastra de date."<<endl;
+    cout<<"1 -> Detalii despre trupele bagate in baza noastra de date."<<endl;
+    cout<<"2 -> Detalii despre discurile bagate in baza noastra de date."<<endl;
     cout<<"3 -> Detalii despre piesele bagate in baza noastra de date."<<endl;
     cout<<"4 -> Gestionare discuri dupa un anumit an."<<endl;
-    cout<<"5 -> Gestionare discuri, in detaliu, dupa numele unei trupe."<<endl;
-    cout<<"6 -> Gestionare discuri, in detaliu, dupa numele unei piese."<<endl;
-    cout<<"7 -> Gestionare castiguri discuri dupa numele unei piese."<<endl;
-    cout<<"8 -> Gestionare discuri dupa an si un buget dat."<<endl;
+    cout<<"5 -> Gestionare piese dupa un an dat ce reprezinta anul aparitiei discului din care fac parte piesele."<<endl;
+    cout<<"6 -> Clasamentul trupelor."<<endl;
+    cout<<"7 -> Pot cumpara clientii introdusi in baza de date discul dorit?"<<endl;
+    cout<<"8 -> Existenta unui disc cu anumite piese."<<endl;
     int k;
     cout<<endl<<"Introduceti numarul dorit: ";
-    fin>>k;
+    cin>>k;
     unsigned long long i;
     switch (k) {
         case 1: {
-            cout << "Detalii despre discurile bagate in baza noastra de date: " << endl;
-            for (i = 0; i < discuri_.size(); i++)
-                cout << discuri_[i] << endl;
-            break;
-        }
-        case 2: {
             cout << "Detalii despre trupele bagate in baza noastra de date: " << endl;
             for (i = 0; i < trupa_.size(); i++)
                 cout << trupa_[i] << endl;
+            break;
+        }
+        case 2: {
+            cout << "Detalii despre discurile bagate in baza noastra de date: " << endl;
+            for (i = 0; i < discuri_.size(); i++)
+                cout << discuri_[i] << endl;
             break;
         }
         case 3: {
@@ -171,44 +253,43 @@ int main()
         case 4: {
             cout << "Alegeti un an pentru care ati vrea sa stiti ce discuri au aparut atunci:";
             int n;
-            fin >> n;
+            cin >> n;
             cout << endl << "Aceste discuri au aparut in anul selectat:" << endl;
             for (i = 0; i < discuri_.size(); i++)
                 discuri_[i].afisare_discuri_aparute_in_anul_n(n);
             break;
         }
         case 5: {
-            cout << endl << "Introduceti un nume de trupa pentru a se afisa detalii despre discurile lor:";
-            string nt;
-            fin >> nt;
-            for (i = 0; i < trupa_.size(); i++)
-                discuri_[i].gestionare_discuri(nt);
+            cout << endl << "Introduceti un an pentru a se afisa piesele ce apar in discurile lansate in anul introdus:";
+            int nt;
+            cin >> nt;
+            for (i = 0; i < discuri_.size(); i++)
+                discuri_[i].gestionare_piese_dupa_anul_discului(nt);
             break;
         }
         case 6: {
-            cout << "Introduceti numele unei piese pentru a va afisa detalii despre discul in care aceasta apare:";
-            string np;
-            fin >> np;
-            for (i = 0; i < piesa_.size(); i++)
-                piesa_[i].gestionare_piese(np);
+            for(i=0;i<trupa_.size();i++)
+                trupa_[i].clasificare_trupa();
             break;
         }
         case 7: {
-            cout<< "Introduceti numele unei piese pentru a va oferi informatii detaliate despre castigurile discului in care apare:";
-            string np2;
-            fin >> np2;
-            for (i = 0; i < piesa_.size(); i++)
-                piesa_[i].gestionare_discuri_dupa_piesa(np2);
+            cout<<"Urmatoarea lista arata daca cumparatorii pot achizitiona discul dorit"<<endl;
+            for (i = 0; i < cumparatori.size(); i++) {
+                cumparatori[i].poate_cumpara();
+                cout<<endl;
+            }
             break;
         }
         case 8: {
-            cout << endl<< "Introduceti un an si un buget pentru a verifica daca va puteti cumpara un disc aparut cel tarziu in acel an:";
-            unsigned an1, buget1;
-            fin >> an1 >> buget1;
-            cout << "Poti cumpara discurile: ";
-            for (i = 0; i < trupa_.size(); i++)
-                if (discuri_[i].cumparare_dupa_an(an1, buget1))
-                    cout << discuri_[i].getNumeDisc() << " ";
+            cout <<"Introduceti 2 dintre piesele voastre preferate si verificati daca exista un disc ce le include pe toate.";
+            vector <string> piese_preferate1;
+            string p;
+            for(i=0;i<2;i++)
+            {
+                cin>>p;
+                piese_preferate1.push_back(p);
+            }
+            c1.exista_discul(piese_preferate1);
             break;
         }
     }
