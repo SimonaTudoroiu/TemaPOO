@@ -8,7 +8,7 @@ class piesa {
     string nume_piesa;
     string nume_trupa;
 public:
-    piesa() { nume_piesa = "au inebunit salcamii"; nume_trupa="Metalica"; }
+    piesa() =default;
     piesa(const string& nume_piesa_, const string& nume_trupa_): nume_piesa{nume_piesa_}, nume_trupa{nume_trupa_}{}
     friend ostream& operator<<(ostream& os, const piesa& p) {
         os<<"Numele piesei: "<<p.nume_piesa<<", numele trupei: "<<p.nume_trupa<<".";
@@ -24,13 +24,8 @@ class disc {
     int pret{50};
     vector<piesa> piese;
 public:
-    disc() { nume_disc= "the disc"; an_aparitie = 2000;nr_vanzari_lunar = 10; pret= 100;
-    for(unsigned long long i = 0;i<2;i++) {
-        piesa p1;
-        piese.push_back(p1);
-    }
-    }
-    disc(const string& nume_disc_, int an_aparitie_, int nr_vanzari_lunar_, int pret_, vector<piesa> piese_): nume_disc{nume_disc_}, an_aparitie{an_aparitie_}, nr_vanzari_lunar{nr_vanzari_lunar_}, pret{pret_}, piese{piese_}{}
+    disc() =default;
+    disc(const string& nume_disc_, int an_aparitie_, int nr_vanzari_lunar_, int pret_, const vector<piesa> piese_): nume_disc{nume_disc_}, an_aparitie{an_aparitie_}, nr_vanzari_lunar{nr_vanzari_lunar_}, pret{pret_}, piese{piese_}{}
 
     friend ostream& operator<<(ostream& os, const disc& d) {
         os<<"Numele discului: "<<d.nume_disc<<", anul aparitiei: "<<d.an_aparitie<<", numarul de vanzari ale discului: "<<d.nr_vanzari_lunar<<", pretul discului: "<<d.pret<<"."<<endl;
@@ -42,7 +37,6 @@ public:
 
     const string& getNumeDisc(){ return nume_disc;}
     int getPret(){ return pret;}
-    int getAn(){return an_aparitie;}
     bool piese_in_disc(vector<string> piesele){
         unsigned long long k=0;
         for(unsigned long long i=0;i<piesele.size();i++)
@@ -81,7 +75,7 @@ class trupa{
     vector<disc> discuri;
 public:
     trupa() =default ;
-    trupa(const string& nume_, const string& solist_, int an_infiintare_, vector<disc> discuri_): nume{nume_}, solist{solist_}, an_infiintare{an_infiintare_}, discuri{discuri_}{}
+    trupa(const string& nume_, const string& solist_, int an_infiintare_, const vector<disc> discuri_): nume{nume_}, solist{solist_}, an_infiintare{an_infiintare_}, discuri{discuri_}{}
 
 
     trupa(const trupa& other) : nume{other.nume}, solist{other.solist}, an_infiintare{other.an_infiintare}{}
@@ -93,7 +87,6 @@ public:
     }
     ~trupa() {}
 
-    const string& getNumeTrupa(){ return nume;}
     friend ostream& operator<<(ostream& os,  trupa& tr) {
         os<<"Nume trupa: "<<tr.nume<<", an de infiintare al trupei: "<<tr.an_infiintare<<", solistul trupei: "<<tr.solist<<".";
         for (unsigned long long i = 0;i<tr.discuri.size();i++)
