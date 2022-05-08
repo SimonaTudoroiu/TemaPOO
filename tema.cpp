@@ -2,153 +2,21 @@
 #include <string>
 #include <vector>
 #include <fstream>
+#include "piesa.h"
+#include "disc.h"
+#include "trupa.h"
+#include "cumparator.h"
+#include "abonament.h"
+#include "abonament_standard.h"
+#include "abonament_premium.h"
+#include "abonat.h"
+#include "eroare_aplicatie.h"
+
 using namespace std;
-ifstream fin("date.txt");
-class piesa {
-    string nume_piesa;
-    string nume_trupa;
-public:
-    piesa() =default;
-    piesa(const string& nume_piesa_, const string& nume_trupa_): nume_piesa{nume_piesa_}, nume_trupa{nume_trupa_}{}
-    friend ostream& operator<<(ostream& os, const piesa& p) {
-        os<<"Numele piesei: "<<p.nume_piesa<<", numele trupei: "<<p.nume_trupa<<".";
-        return os;
-    }
-    const string& getNumePiesa() {return nume_piesa;}
-};
-
-class disc {
-    string nume_disc;
-    int an_aparitie{2000};
-    int nr_vanzari_lunar{100};
-    int pret{50};
-    vector<piesa> piese;
-public:
-    disc() =default;
-    disc(const string& nume_disc_, int an_aparitie_, int nr_vanzari_lunar_, int pret_, const vector<piesa> &piese_): nume_disc{nume_disc_}, an_aparitie{an_aparitie_}, nr_vanzari_lunar{nr_vanzari_lunar_}, pret{pret_}, piese{piese_}{}
-
-    friend ostream& operator<<(ostream& os, const disc& d) {
-        os<<"Numele discului: "<<d.nume_disc<<", anul aparitiei: "<<d.an_aparitie<<", numarul de vanzari ale discului: "<<d.nr_vanzari_lunar<<", pretul discului: "<<d.pret<<"."<<endl;
-        os<<"Piesele aparute pe discul "<<d.nume_disc<<" sunt:";
-        for(unsigned long long i=0; i<d.piese.size();i++)
-            os<<d.piese[i]<<" ";
-        return os;
-    }
-
-    const string& getNumeDisc(){ return nume_disc;}
-    int getPret(){ return pret;}
-    bool piese_in_disc(vector<string> piesele){
-        unsigned long long k=0;
-        for(unsigned long long i=0;i<piesele.size();i++)
-        {
-            int ok=0;
-            for(unsigned long long j=0;j<piese.size();j++)
-                if(piesele[i]==piese[j].getNumePiesa())
-                    ok=1;
-            if(ok==1)
-                k++;
-        }
-        if(k==piesele.size())
-            return true;
-        else
-            return false;
-    }
-    void afisare_discuri_aparute_in_anul_n (int an_){
-        if (an_==an_aparitie)
-            cout<<nume_disc<<" ";
-    }
-    void gestionare_piese_dupa_anul_discului(int an_){
-        if(an_==an_aparitie)
-            for(unsigned long long i=0;i<piese.size();i++)
-                cout<<piese[i]<<endl;
-    }
-    int profit_lunar () {
-        int profit;
-        profit=nr_vanzari_lunar*pret;
-        return profit;
-    }
-};
-class trupa{
-    string nume;
-    string solist;
-    int an_infiintare{1900};
-    vector<disc> discuri;
-public:
-    trupa() =default ;
-    trupa(const string& nume_, const string& solist_, int an_infiintare_, const vector<disc> &discuri_): nume{nume_}, solist{solist_}, an_infiintare{an_infiintare_}, discuri{discuri_}{}
-
-
-    trupa(const trupa& other) : nume{other.nume}, solist{other.solist}, an_infiintare{other.an_infiintare}, discuri{other.discuri}{}
-    trupa& operator=(const trupa& other) {
-        nume = other.nume;
-        solist = other.solist;
-        an_infiintare = other.an_infiintare;
-        discuri = other.discuri;
-        return *this;
-    }
-    ~trupa() {}
-
-    friend ostream& operator<<(ostream& os,  trupa& tr) {
-        os<<"Nume trupa: "<<tr.nume<<", an de infiintare al trupei: "<<tr.an_infiintare<<", solistul trupei: "<<tr.solist<<".";
-        for (unsigned long long i = 0;i<tr.discuri.size();i++)
-            os<<tr.discuri[i]<<' ';
-        return os;
-    }
-
-    bool verificare_disc(vector<string> piesele)
-    {
-        for(unsigned long long i=0;i<discuri.size();i++)
-            if(discuri[i].piese_in_disc(piesele)==true)
-                return true;
-        return false;
-
-    }
-    void clasificare_trupa(){
-        int k=0;
-        for(unsigned long long i=0; i<discuri.size();i++)
-            k = k + discuri[i].profit_lunar()*12;
-        if(k > 10000)
-            cout<<"Trupa "<<nume<<" se afla printre trupele cu profitul cel mai mare provenit din vanzarea discurilor, acumuland "<<k<<" lei anual."<<endl;
-        else if(k> 5000)
-            cout<<"Trupa "<<nume<<" se afla printre trupele cu profit mediu provenit din vanzarea discurilor, acumuland "<<k<<" lei anual."<<endl;
-        else
-            cout<<"Trupa "<<nume<<" se afla printre trupele cu profit mic provenit din vanzarea discurilor, acumuland "<<k<<" lei anual."<<endl;
-    }
-};
-class cumparator{
-    int id_cumparator{1152};
-    int buget{150};
-    string nume;
-    string prenume;
-    string mail;
-    disc d;
-    trupa tr;
-public:
-    cumparator() = default;
-    cumparator(int id_cumparator_, int buget_, const string& nume_, const string& prenume_, const string& mail_, const disc& d_, const trupa& tr_): id_cumparator{id_cumparator_}, buget{buget_}, nume{nume_}, prenume{prenume_}, mail{mail_}, d{d_}, tr{tr_} {}
-
-    friend ostream &operator<<(ostream &os, const cumparator &cumparator) {
-        os << "Id-ul cumparatorului: " << cumparator.id_cumparator << ", buget: " << cumparator.buget << ", nume: "<< cumparator.nume << ", prenume: " << cumparator.prenume << ", mail: " << cumparator.mail<<".";
-        return os;
-    }
-    void poate_cumpara(){
-         if( d.getPret()<=buget)
-             cout<<"Cumparatorul "<<nume<<" "<<prenume<<" poate cumpara discul "<<d.getNumeDisc()<<". Se va trimite un mail de confirmare a comenzii la adresa "<<mail<<".";
-         else
-             cout<<"Cumparatorul "<<nume<<" "<<prenume<<" nu poate cumpara discul "<<d.getNumeDisc()<<". Se va trimite un mail infirmare a comenzii la adresa "<<mail<<".";
-    }
-    void exista_discul(vector <string> piese_preferate){
-        if(tr.verificare_disc(piese_preferate)==true)
-            cout<<"Exista discul cu piesele enumerate.";
-        else
-            cout<<"Nu exista discul cu piesele enumerate.";
-    }
-};
-
-
 
 int main()
 {
+    ifstream fin("date.txt");
 
     vector <piesa> piesa_;
     piesa p1("piesa1","trupa1");
@@ -209,83 +77,269 @@ int main()
     cumparatori.push_back(c4);
     cumparatori.push_back(c5);
 
-    cout<<"Bine ati venit in lumea discografiei."<<endl;
-    cout<<"Avem bagate in baza noastra de date o multitudine de discuri, trupe, si piese."<<endl;
-    cout<<"Pentru a accesa un anumit serviciu, va rugam sa introduceti un numar de la 1 la 8, si sa apasati tasta enter."<<endl;
-    cout<<"Optiunile sunt:"<<endl;
-    cout<<"1 -> Detalii despre trupele bagate in baza noastra de date."<<endl;
-    cout<<"2 -> Detalii despre discurile bagate in baza noastra de date."<<endl;
-    cout<<"3 -> Detalii despre piesele bagate in baza noastra de date."<<endl;
-    cout<<"4 -> Gestionare discuri dupa un anumit an."<<endl;
-    cout<<"5 -> Gestionare piese dupa un an dat ce reprezinta anul aparitiei discului din care fac parte piesele."<<endl;
-    cout<<"6 -> Clasamentul trupelor."<<endl;
-    cout<<"7 -> Pot cumpara clientii introdusi in baza de date discul dorit?"<<endl;
-    cout<<"8 -> Existenta unui disc cu anumite piese."<<endl;
-    int k;
-    cout<<endl<<"Introduceti numarul dorit: ";
-    cin>>k;
-    unsigned long long i;
-    switch (k) {
-        case 1: {
-            cout << "Detalii despre trupele bagate in baza noastra de date: " << endl;
-            for (i = 0; i < trupa_.size(); i++)
-                cout << trupa_[i] << endl;
-            break;
-        }
-        case 2: {
-            cout << "Detalii despre discurile bagate in baza noastra de date: " << endl;
-            for (i = 0; i < discuri_.size(); i++)
-                cout << discuri_[i] << endl;
-            break;
-        }
-        case 3: {
-            cout << "Detalii despre piesele bagate in baza noastra de date: " << endl;
-            for (i = 0; i < piesa_.size(); i++)
-                cout << piesa_[i] << endl;
-            break;
-        }
-        case 4: {
-            cout << "Alegeti un an pentru care ati vrea sa stiti ce discuri au aparut atunci:";
-            int n;
-            cin >> n;
-            cout << endl << "Aceste discuri au aparut in anul selectat:" << endl;
-            for (i = 0; i < discuri_.size(); i++)
-                discuri_[i].afisare_discuri_aparute_in_anul_n(n);
-            break;
-        }
-        case 5: {
-            cout << endl << "Introduceti un an pentru a se afisa piesele ce apar in discurile lansate in anul introdus:";
-            int nt;
-            cin >> nt;
-            for (i = 0; i < discuri_.size(); i++)
-                discuri_[i].gestionare_piese_dupa_anul_discului(nt);
-            break;
-        }
-        case 6: {
-            for(i=0;i<trupa_.size();i++)
-                trupa_[i].clasificare_trupa();
-            break;
-        }
-        case 7: {
-            cout<<"Urmatoarea lista arata daca cumparatorii pot achizitiona discul dorit"<<endl;
-            for (i = 0; i < cumparatori.size(); i++) {
-                cumparatori[i].poate_cumpara();
-                cout<<endl;
+    abonament_standard as(15,1,d1);
+    abonament_premium ap(25,2,{d1,d2},10);
+
+    bool meniu = true;
+
+    while(meniu) {
+        comezi_principale:
+
+        cout<<"Bine ati venit in lumea discografiei."<<endl;
+        cout<<"Avem bagate in baza noastra de date o multitudine de discuri, trupe, si piese."<<endl;
+        cout<<"Pentru a accesa un anumit serviciu, va rugam sa introduceti un numar de la 1 la 8, si sa apasati tasta enter."<<endl;
+        cout<<"Optiunile sunt:"<<endl;
+        cout<<"0 -> Iesiti din program."<<endl;
+        cout<<"1 -> Detalii despre trupele bagate in baza noastra de date."<<endl;
+        cout<<"2 -> Detalii despre discurile bagate in baza noastra de date."<<endl;
+        cout<<"3 -> Detalii despre piesele bagate in baza noastra de date."<<endl;
+        cout<<"4 -> Gestionare discuri dupa un anumit an."<<endl;
+        cout<<"5 -> Gestionare piese dupa un an dat ce reprezinta anul aparitiei discului din care fac parte piesele."<<endl;
+        cout<<"6 -> Clasamentul trupelor."<<endl;
+        cout<<"7 -> Pot cumpara clientii introdusi in baza de date discul dorit?"<<endl;
+        cout<<"8 -> Existenta unui disc cu anumite piese."<<endl;
+        cout<<"9 -> Vreti sa deveniti abonatul nostru? Sunteti pasionat de muzica si vreti sa primiti lunar unul sau mai multe discuri direct la voi acasa la un pret redus? Atunci aruncati o privire la facilitatile fiecarui abonament!"<<endl;
+        cout<<"10 -> V-ati hotarat si vreti sa deveniti abonatul nostru? Atunci va rugam sa va introduceti datele cerute pentru a va putea inregistra. In cazul in care optati pentru un abonament premium, va rugam sa introduceti si discul ales pe care vreti sa il primiti."<<endl;
+
+        int k;
+        cout<<endl<<"Introduceti numarul dorit: ";
+        cin>>k;
+        unsigned long long i;
+
+        switch (k) {
+            case 0:{
+                meniu = false;
+                break;
             }
-            break;
-        }
-        case 8: {
-            cout <<"Introduceti piesele voastre preferate si verificati daca exista un disc ce le include pe toate. La final, introduceti caracterul '#'.";
-            vector <string> piese_preferate1;
-            string p;
-            cin>>p;
-            while(p!="#")
-            {
-                piese_preferate1.push_back(p);
-                cin>>p;
+            case 1: {
+                cout << "Detalii despre trupele bagate in baza noastra de date: " << endl;
+                for (i = 0; i < trupa_.size(); i++)
+                    cout << trupa_[i] << endl;
+                goto comezi_principale;
             }
-            c1.exista_discul(piese_preferate1);
-            break;
+            case 2: {
+                cout << "Detalii despre discurile bagate in baza noastra de date: " << endl;
+                for (i = 0; i < discuri_.size(); i++)
+                    cout << discuri_[i] << endl;
+                goto comezi_principale;
+            }
+            case 3: {
+                cout << "Detalii despre piesele bagate in baza noastra de date: " << endl;
+                for (i = 0; i < piesa_.size(); i++)
+                    cout << piesa_[i] << endl;
+                goto comezi_principale;
+            }
+            case 4: {
+                cout << "Alegeti un an pentru care ati vrea sa stiti ce discuri au aparut atunci:";
+                int n;
+                cin >> n;
+                cout << endl << "Aceste discuri au aparut in anul selectat:" << endl;
+                for (i = 0; i < discuri_.size(); i++)
+                    discuri_[i].afisare_discuri_aparute_in_anul_n(n);
+                goto comezi_principale;
+            }
+            case 5: {
+                cout << endl
+                     << "Introduceti un an pentru a se afisa piesele ce apar in discurile lansate in anul introdus:";
+                int nt;
+                cin >> nt;
+                for (i = 0; i < discuri_.size(); i++)
+                    discuri_[i].gestionare_piese_dupa_anul_discului(nt);
+                goto comezi_principale;
+            }
+            case 6: {
+                for (i = 0; i < trupa_.size(); i++)
+                    trupa_[i].clasificare_trupa();
+                goto comezi_principale;
+            }
+            case 7: {
+                cout << "Urmatoarea lista arata daca cumparatorii pot achizitiona discul dorit" << endl;
+                for (i = 0; i < cumparatori.size(); i++) {
+                    cumparatori[i].poate_cumpara();
+                    cout << endl;
+                }
+                goto comezi_principale;
+            }
+            case 8: {
+                cout
+                        << "Introduceti piesele voastre preferate si verificati daca exista un disc ce le include pe toate. La final, introduceti caracterul '#'.";
+                vector<string> piese_preferate1;
+                string p;
+                cin >> p;
+                while (p != "#") {
+                    piese_preferate1.push_back(p);
+                    cin >> p;
+                }
+                c1.exista_discul(piese_preferate1);
+                goto comezi_principale;
+            }
+            case 9: {
+                cout << "Facilitatile abonamentului standard:" << endl;
+                vector<string> v = as.facilitati();
+                for (i = 0; i < v.size(); i++)
+                    cout << v[i] << endl;
+                cout << endl << "Facilitatile abonamentului premium:" << endl;
+                v = ap.facilitati();
+                for (i = 0; i < v.size(); i++)
+                    cout << v[i] << endl;
+                goto comezi_principale;
+            }
+            case 10: {
+                try {
+                    abonat ab;
+                    cin >> ab;
+                    if (ab.poate_cumpara_abonamentul() == false) {
+                        cout << endl;
+                        goto comezi_principale;
+                    } else {
+                        cout << endl;
+                        cout << "Acum sunteti unul dintre abonatii nostrii." << endl;
+
+                        standard:
+                        if (ab.get_tip_abonament() == "Standard") {
+
+                            abonament_standard as1(15, 1, d1);
+                            cout
+                                    << "Acestea sunt facilitatile dumneavoastra pentru abonamentul standard care costa "
+                                    << as1.pret_abonament() << " de lei, si unde veti primi "
+                                    << "un disc." << endl;
+                            submeniu1:
+
+                            cout << "Opiunile abonamentului standard:" << endl;
+                            cout << "0 -> Renuntare la abonament." << endl;
+                            cout << "1 -> Verificarea datelor dumneavoastra pe care noi le stocam." << endl;
+                            cout
+                                    << "2 -> Verificarea facilitatilor abonamentului premium si standard, pentru comparatie, sau pentru un upgrade la abonamentul premium in cazul in care doriti acest lucru."
+                                    << endl;
+
+                            int k1;
+                            cin >> k1;
+                            switch (k1) {
+                                case (0): {
+                                    cout
+                                            << "Ne pare rau ca nu mai doriti sa fiti abonatul nostru. Chiar daca nu mai sunteti abonat, tot puteti naviga prin optiunile noastre principale."
+                                            << endl;
+                                    goto comezi_principale;
+                                }
+                                case (1): {
+                                    cout << ab << endl;
+                                    goto submeniu1;
+                                }
+                                case (2): {
+                                    ab.getTipAbonament()->beneficii_abonament();
+                                    cout << "Vreti sa faceti upgrade la abonament premium?(Introduceti Da sau Nu)" << endl;
+                                    string s;
+                                    cin >> s;
+                                    if (s == "Da") {
+                                        ab.setTipAbonament("Premium");
+                                        if (ab.poate_cumpara_abonamentul_2() == true) {
+                                            abonament *a = new abonament_premium(25, 2, {d1, d2}, 10);
+                                            abonament_premium *ap1 = dynamic_cast<abonament_premium *>(a);
+                                            ab.getTipAbonament()->upgrade_premium();
+                                            cout
+                                                    << "Acestea sunt facilitatile dumneavoastra pentru abonamentul premium care costa "
+                                                    << ap1->pret_abonament() << " de lei, si unde veti primi "
+                                                    << a->getDiscuriPrimite() << " discuri." << endl;
+                                            vector<string> f1 = ap1->facilitati();
+                                            for (i = 0; i < f1.size(); i++)
+                                                cout << "-" << f1[i] << endl;
+                                            cout << endl;
+
+                                            submeniu1_2:
+
+                                            cout << "Opiunile abonamentului premium:" << endl;
+                                            cout << "0 -> Renuntare la card premium." << endl;
+                                            cout << "1 -> Verificarea pretului fiecarul disc cu reducere aplicata."
+                                                 << endl;
+                                            cout << "2 -> Gestionare discuri primite." << endl;
+
+                                            int t;
+                                            cin >> t;
+                                            switch (t) {
+                                                case (0): {
+                                                    goto submeniu1;
+                                                }
+                                                case (1): {
+                                                    for (i = 0; i < discuri_.size(); i++) {
+                                                        cout << "Pentru " << discuri_[i].getNumeDisc()
+                                                             << ", pretul dupa reducere este: "
+                                                             << ap1->disc_cu_reducere(discuri_[i]) << "." << endl;
+                                                    }
+                                                    cout << endl;
+                                                    goto submeniu1_2;
+                                                }
+                                                case (2): {
+                                                    cout << "Discurile pe care le primiti luna asta sunt:" << endl;
+                                                    ap1->interogare_discuri_primite();
+                                                    goto submeniu1_2;
+                                                }
+
+                                            }
+                                        } else {
+                                            ab.setTipAbonament("Standard");
+                                            cout << "Nu poti face upgrade la abonamentul Premium. Ne pare rau!" << endl;
+                                            goto submeniu1;
+                                        }
+                                    }
+                                    goto submeniu1;
+                                }
+
+                            }
+                        } else if (ab.get_tip_abonament() == "Premium") {
+                            abonament_premium apr(25, 2, {d1, d2}, 10);
+                            cout
+                                    << "Acestea sunt facilitatile dumneavoastra pentru abonamentul premium care costa "
+                                    << apr.pret_abonament() << " de lei, si unde veti primi "
+                                    << "doua discuri." << endl;
+
+                            submeniu2:
+
+                            cout << "Opiunile abonamentului premium:" << endl;
+                            cout << "0 -> Renuntare la abonament." << endl;
+                            cout << "1 -> Verificarea datelor dumneavoastra pe care noi le stocam." << endl;
+                            cout
+                                    << "2 -> Verificarea facilitatilor abonamentului premium si standard, pentru comparatie, sau pentru un downgrade la abonamentul standard in cazul in care doriti acest lucru."
+                                    << endl;
+
+                            int k2;
+                            cin >> k2;
+                            switch (k2) {
+                                case (0): {
+                                    cout
+                                            << "Ne pare rau ca nu mai doriti sa fiti abonatul nostru. Chiar daca nu mai sunteti abonat, tot puteti naviga prin optiunile noastre principale."
+                                            << endl;
+                                    goto comezi_principale;
+                                }
+                                case (1): {
+                                    cout << apr << endl;
+                                    goto submeniu2;
+                                }
+                                case (2): {
+                                    ab.getTipAbonament()->beneficii_abonament();
+                                    cout << "Vreti sa faceti downgrade la abonament standard?(Introduceti Da sau Nu)"
+                                         << endl;
+                                    string s1;
+                                    cin >> s1;
+                                    if (s1 == "Da") {
+
+                                        ab.setTipAbonament("Standard");
+                                        goto standard;
+
+
+                                    } else if (s1 == "Nu") {
+                                        goto submeniu2;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    break;
+                }
+                catch (eroare_aplicatie& err){
+                    cout<<err.what();
+
+                }
+            }
         }
     }
     return 0;
