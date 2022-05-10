@@ -25,11 +25,11 @@ public:
 
     abonament_premium& operator=(const abonament_premium& other);
 
-    int pret_abonament();
+    int pret_abonament() override;
 
-    std::vector<std::string> facilitati();
+    std::vector<std::string> facilitati() override;
 
-    int getDiscuriPrimite();
+    int getDiscuriPrimite() override;
 
     int disc_cu_reducere(disc d);
 

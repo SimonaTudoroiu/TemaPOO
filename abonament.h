@@ -29,7 +29,7 @@ public:
 
     friend std::istream &operator>>(std::istream &is, abonament &abonament);
 
-    int pret_abonament();
+    int pret_abonament() override ;
 
     virtual int getAbonament();
 
