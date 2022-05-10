@@ -11,7 +11,7 @@
 #include <exception>
 class nu_exista_abonament : public eroare_aplicatie{
 public:
-    nu_exista_abonament(const std::string &arg);
+    explicit nu_exista_abonament(const std::string &arg);
 };
 
 

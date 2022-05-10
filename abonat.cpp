@@ -6,7 +6,7 @@
 #include "nu_exista_abonament.h"
 
 abonat::abonat(int bugetLunar, const std::string &tipAbonament, const std::string &discDorit) : buget_lunar(bugetLunar), tip_abonament(tipAbonament), disc_dorit(discDorit) {
-    if(tipAbonament != "Standard" || tipAbonament != "Premium")
+    if(tipAbonament != "Standard" && tipAbonament != "Premium")
     {
         throw nu_exista_abonament("");
     }

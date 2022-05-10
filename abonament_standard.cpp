@@ -12,9 +12,7 @@ abonament_standard::~abonament_standard() {
 
 }
 
-abonament_standard::abonament_standard(const abonament_standard &other) : abonament(other){
-    disc_standard = other.disc_standard;
-}
+abonament_standard::abonament_standard(const abonament_standard &other) : abonament(other), disc_standard(other.disc_standard){}
 
 abonament_standard& abonament_standard::operator=(const abonament_standard& other){
     abonament::operator=(other);
