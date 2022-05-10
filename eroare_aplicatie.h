@@ -9,7 +9,7 @@
 #include <exception>
 class eroare_aplicatie : public std::runtime_error{
 public:
-    eroare_aplicatie(const std::string &arg);
+    explicit eroare_aplicatie(const std::string &arg);
 };
 
 

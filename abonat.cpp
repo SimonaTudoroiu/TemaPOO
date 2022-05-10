@@ -111,7 +111,7 @@ std::string abonat::get_tip_abonament() {
     return tip_abonament;
 }
 
-void abonat::setTipAbonament(const std::string tip_abonament_) {
+void abonat::setTipAbonament( std::string const tip_abonament_) {
     tip_abonament = tip_abonament_;
 }
 

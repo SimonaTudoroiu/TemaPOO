@@ -40,7 +40,7 @@ public:
 
     std::string get_tip_abonament();
 
-    void setTipAbonament(const std::string tip_abonament_);
+    void setTipAbonament( std::string const tip_abonament_);
 
     bool poate_cumpara_abonamentul_2();
 };
