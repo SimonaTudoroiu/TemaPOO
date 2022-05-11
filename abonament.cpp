@@ -10,7 +10,7 @@ abonament::~abonament() {
 
 }
 
-abonament::abonament(const abonament &other) : aplicatie(other){
+abonament::abonament(const abonament &other) : subscriptie(other){
     pret = other.pret;
     nr_discuri_primite = other.nr_discuri_primite;
 }

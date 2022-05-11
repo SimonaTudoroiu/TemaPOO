@@ -24,7 +24,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 ###############################################################################
 
 # NOTE: update executable name in .github/workflows/cmake.yml when changing name here
-add_executable(${PROJECT_NAME} tema.cpp piesa.cpp piesa.h disc.cpp disc.h trupa.cpp trupa.h cumparator.cpp cumparator.h abonament.cpp abonament.h abonament_standard.cpp abonament_standard.h abonament_premium.cpp abonament_premium.h abonat.cpp abonat.h aplicatie.cpp aplicatie.h eroare_aplicatie.cpp eroare_aplicatie.h nu_exista_abonament.cpp nu_exista_abonament.h)
+add_executable(${PROJECT_NAME} tema.cpp piesa.cpp piesa.h disc.cpp disc.h trupa.cpp trupa.h cumparator.cpp cumparator.h abonament.cpp abonament.h abonament_standard.cpp abonament_standard.h abonament_premium.cpp abonament_premium.h abonat.cpp abonat.h subscriptie.cpp subscriptie.h eroare_aplicatie.cpp eroare_aplicatie.h nu_exista_abonament.cpp nu_exista_abonament.h)
 
 ###############################################################################
 

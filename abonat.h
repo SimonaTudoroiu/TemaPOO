@@ -8,13 +8,13 @@
 
 #include "abonament.h"
 #include "disc.h"
-#include "aplicatie.h"
+#include "subscriptie.h"
 #include <memory>
 #include <iostream>
 class abonat {
     static int id_abonat;
     int buget_lunar{25};
-    std::shared_ptr<aplicatie> abon;
+    std::shared_ptr<subscriptie> abon;
     std::string tip_abonament;
     std::string disc_dorit;
 public:
@@ -30,7 +30,7 @@ public:
 
     friend std::istream &operator>>(std::istream &is, abonat &abonat);
 
-    std::shared_ptr<aplicatie> getTipAbonament();
+    std::shared_ptr<subscriptie> getTipAbonament();
 
     bool poate_cumpara_abonamentul();
 

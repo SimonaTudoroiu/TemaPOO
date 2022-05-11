@@ -46,7 +46,7 @@ std::istream &operator>>(std::istream &is, abonat &abonat) {
     }
     return is;
 }
-std::shared_ptr<aplicatie> abonat::getTipAbonament() {
+std::shared_ptr<subscriptie> abonat::getTipAbonament() {
     return abon;
 }
 

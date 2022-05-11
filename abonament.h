@@ -9,9 +9,9 @@
 #include <ostream>
 #include <iostream>
 #include <vector>
-#include "aplicatie.h"
+#include "subscriptie.h"
 
-class abonament : public aplicatie{
+class abonament : public subscriptie{
     int pret{20};
     int nr_discuri_primite{1};
 public:

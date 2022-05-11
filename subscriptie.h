@@ -2,12 +2,12 @@
 // Created by Simona on 5/8/2022.
 //
 
-#ifndef OOP_APLICATIE_H
-#define OOP_APLICATIE_H
+#ifndef OOP_SUBSCRIPTIE_H
+#define OOP_SUBSCRIPTIE_H
 #include <iostream>
 #include <vector>
 
-class aplicatie {
+class subscriptie {
 public:
 
     virtual int pret_abonament()=0;
@@ -20,4 +20,4 @@ public:
 };
 
 
-#endif //OOP_APLICATIE_H
+#endif //OOP_SUBSCRIPTIE_H
