@@ -115,9 +115,7 @@ void abonat::incrementeaza_id_abonat() {
     id_abonat += 1;
 }
 
-int abonat::returneaza_id_abonat() {
-    return id_abonat;
-}
+
 
 std::string abonat::get_tip_abonament() {
     return tip_abonament;
