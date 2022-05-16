@@ -13,6 +13,7 @@
 #include <iostream>
 class abonat {
     static int id_abonat;
+    int id;
     int buget_lunar{25};
     std::shared_ptr<subscriptie> abon;
     std::string tip_abonament;

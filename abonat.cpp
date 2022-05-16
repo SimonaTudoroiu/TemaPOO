@@ -10,10 +10,21 @@ abonat::abonat(int bugetLunar, const std::string &tipAbonament, const std::strin
     {
         throw nu_exista_abonament("");
     }
+    abonat::incrementeaza_id_abonat();
+    id = id_abonat;
+
 }
 
 
-abonat::abonat(int bugetLunar, const std::string &tipAbonament) : buget_lunar(bugetLunar), tip_abonament(tipAbonament) {}
+abonat::abonat(int bugetLunar, const std::string &tipAbonament) : buget_lunar(bugetLunar), tip_abonament(tipAbonament) {
+    if(tipAbonament != "Standard" && tipAbonament != "Premium")
+    {
+        throw nu_exista_abonament("");
+    }
+    abonat::incrementeaza_id_abonat();
+    id = id_abonat;
+
+}
 
 
 abonat::~abonat() {
@@ -21,7 +32,7 @@ abonat::~abonat() {
 }
 
 std::ostream &operator<<(std::ostream &os, const abonat &abonat) {
-    os <<"Detaliile retinute de noi despre dumneavoastra: "<<std::endl<<" Buget_lunar: " << abonat.buget_lunar << " ,tip_abonament: "
+    os <<"Detaliile retinute de noi despre dumneavoastra: "<<std::endl<<"Id: "<<abonat.id<<std::endl<<" Buget_lunar: " << abonat.buget_lunar << " ,tip_abonament: "
        << abonat.tip_abonament;
     if(abonat.tip_abonament == "Premium")
         os<<" ,disc_dorit: " << abonat.disc_dorit<<"."<<std::endl;
@@ -30,8 +41,9 @@ std::ostream &operator<<(std::ostream &os, const abonat &abonat) {
     return os;
 }
 std::istream &operator>>(std::istream &is, abonat &abonat) {
-    abonat::incrementeaza_id_abonat();
-    std::cout<<"Sunteti abonatul cu id_ul: "<<abonat::returneaza_id_abonat()<<std::endl;
+    abonat.incrementeaza_id_abonat();
+    abonat.id = abonat.id_abonat;
+    std::cout<<"Sunteti abonatul cu id_ul: "<<abonat.id<<std::endl;
     std::cout<<"Introduceti bugetul lunar pe care il aveti la dispozitie pentru acest abonament, si abonamentul dorit."<<std::endl;
     std::cout<<"Bugetul: ";
     is>>abonat.buget_lunar;

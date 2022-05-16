@@ -83,7 +83,6 @@ int main()
     bool meniu = true;
 
     while(meniu) {
-        comezi_principale:
 
         cout<<"Bine ati venit in lumea discografiei."<<endl;
         cout<<"Avem bagate in baza noastra de date o multitudine de discuri, trupe, si piese."<<endl;
@@ -115,19 +114,19 @@ int main()
                 cout << "Detalii despre trupele bagate in baza noastra de date: " << endl;
                 for (i = 0; i < trupa_.size(); i++)
                     cout << trupa_[i] << endl;
-                goto comezi_principale;
+                break;
             }
             case 2: {
                 cout << "Detalii despre discurile bagate in baza noastra de date: " << endl;
                 for (i = 0; i < discuri_.size(); i++)
                     cout << discuri_[i] << endl;
-                goto comezi_principale;
+                break;
             }
             case 3: {
                 cout << "Detalii despre piesele bagate in baza noastra de date: " << endl;
                 for (i = 0; i < piesa_.size(); i++)
                     cout << piesa_[i] << endl;
-                goto comezi_principale;
+                break;
             }
             case 4: {
                 cout << "Alegeti un an pentru care ati vrea sa stiti ce discuri au aparut atunci:";
@@ -136,7 +135,7 @@ int main()
                 cout << endl << "Aceste discuri au aparut in anul selectat:" << endl;
                 for (i = 0; i < discuri_.size(); i++)
                     discuri_[i].afisare_discuri_aparute_in_anul_n(n);
-                goto comezi_principale;
+                break;
             }
             case 5: {
                 cout << endl
@@ -145,12 +144,12 @@ int main()
                 cin >> nt;
                 for (i = 0; i < discuri_.size(); i++)
                     discuri_[i].gestionare_piese_dupa_anul_discului(nt);
-                goto comezi_principale;
+                break;
             }
             case 6: {
                 for (i = 0; i < trupa_.size(); i++)
                     trupa_[i].clasificare_trupa();
-                goto comezi_principale;
+                break;
             }
             case 7: {
                 cout << "Urmatoarea lista arata daca cumparatorii pot achizitiona discul dorit" << endl;
@@ -158,7 +157,7 @@ int main()
                     cumparatori[i].poate_cumpara();
                     cout << endl;
                 }
-                goto comezi_principale;
+                break;
             }
             case 8: {
                 cout
@@ -171,7 +170,7 @@ int main()
                     cin >> p;
                 }
                 c1.exista_discul(piese_preferate1);
-                goto comezi_principale;
+                break;
             }
             case 9: {
                 cout << "Facilitatile abonamentului standard:" << endl;
@@ -182,7 +181,7 @@ int main()
                 v = ap.facilitati();
                 for (i = 0; i < v.size(); i++)
                     cout << v[i] << endl;
-                goto comezi_principale;
+                break;
             }
             case 10: {
                 try {
@@ -190,144 +189,161 @@ int main()
                     cin >> ab;
                     if (ab.poate_cumpara_abonamentul() == false) {
                         cout << endl;
-                        goto comezi_principale;
+                        break;
                     } else {
                         cout << endl;
                         cout << "Acum sunteti unul dintre abonatii nostrii." << endl;
 
-                        standard:
-                        if (ab.get_tip_abonament() == "Standard") {
+                        bool st = true;
+                        while (st) {
+                            if (ab.get_tip_abonament() == "Standard") {
 
-                            abonament_standard as1(15, 1, d1);
-                            cout
-                                    << "Acestea sunt facilitatile dumneavoastra pentru abonamentul standard care costa "
-                                    << as1.pret_abonament() << " de lei, si unde veti primi "
-                                    << "un disc." << endl;
-                            submeniu1:
+                                abonament_standard as1(15, 1, d1);
+                                cout
+                                        << "Acestea sunt facilitatile dumneavoastra pentru abonamentul standard care costa "
+                                        << as1.pret_abonament() << " de lei, si unde veti primi "
+                                        << "un disc." << endl;
+                                bool meniu_standard = true;
 
-                            cout << "Opiunile abonamentului standard:" << endl;
-                            cout << "0 -> Renuntare la abonament." << endl;
-                            cout << "1 -> Verificarea datelor dumneavoastra pe care noi le stocam." << endl;
-                            cout
-                                    << "2 -> Verificarea facilitatilor abonamentului premium si standard, pentru comparatie, sau pentru un upgrade la abonamentul premium in cazul in care doriti acest lucru."
-                                    << endl;
-
-                            int k1;
-                            cin >> k1;
-                            switch (k1) {
-                                case (0): {
+                                while (meniu_standard) {
+                                    cout << "Opiunile abonamentului standard:" << endl;
+                                    cout << "0 -> Renuntare la abonament." << endl;
+                                    cout << "1 -> Verificarea datelor dumneavoastra pe care noi le stocam." << endl;
                                     cout
-                                            << "Ne pare rau ca nu mai doriti sa fiti abonatul nostru. Chiar daca nu mai sunteti abonat, tot puteti naviga prin optiunile noastre principale."
+                                            << "2 -> Verificarea facilitatilor abonamentului premium si standard, pentru comparatie, sau pentru un upgrade la abonamentul premium in cazul in care doriti acest lucru."
                                             << endl;
-                                    goto comezi_principale;
-                                }
-                                case (1): {
-                                    cout << ab << endl;
-                                    goto submeniu1;
-                                }
-                                case (2): {
-                                    ab.getTipAbonament()->beneficii_abonament();
-                                    cout << "Vreti sa faceti upgrade la abonament premium?(Introduceti Da sau Nu)" << endl;
-                                    string s;
-                                    cin >> s;
-                                    if (s == "Da") {
-                                        ab.setTipAbonament("Premium");
-                                        if (ab.poate_cumpara_abonamentul_2() == true) {
-                                            abonament *a = new abonament_premium(25, 2, {d1, d2}, 10);
-                                            abonament_premium *ap1 = dynamic_cast<abonament_premium *>(a);
-                                            ab.getTipAbonament()->upgrade_premium();
+
+                                    int k1;
+                                    cin >> k1;
+                                    switch (k1) {
+                                        case (0): {
                                             cout
-                                                    << "Acestea sunt facilitatile dumneavoastra pentru abonamentul premium care costa "
-                                                    << ap1->pret_abonament() << " de lei, si unde veti primi "
-                                                    << a->getDiscuriPrimite() << " discuri." << endl;
-                                            vector<string> f1 = ap1->facilitati();
-                                            for (i = 0; i < f1.size(); i++)
-                                                cout << "-" << f1[i] << endl;
-                                            cout << endl;
-
-                                            submeniu1_2:
-
-                                            cout << "Opiunile abonamentului premium:" << endl;
-                                            cout << "0 -> Renuntare la card premium." << endl;
-                                            cout << "1 -> Verificarea pretului fiecarul disc cu reducere aplicata."
-                                                 << endl;
-                                            cout << "2 -> Gestionare discuri primite." << endl;
-
-                                            int t;
-                                            cin >> t;
-                                            switch (t) {
-                                                case (0): {
-                                                    goto submeniu1;
-                                                }
-                                                case (1): {
-                                                    for (i = 0; i < discuri_.size(); i++) {
-                                                        cout << "Pentru " << discuri_[i].getNumeDisc()
-                                                             << ", pretul dupa reducere este: "
-                                                             << ap1->disc_cu_reducere(discuri_[i]) << "." << endl;
-                                                    }
-                                                    cout << endl;
-                                                    goto submeniu1_2;
-                                                }
-                                                case (2): {
-                                                    cout << "Discurile pe care le primiti luna asta sunt:" << endl;
-                                                    ap1->interogare_discuri_primite();
-                                                    goto submeniu1_2;
-                                                }
-
-                                            }
-                                        } else {
-                                            ab.setTipAbonament("Standard");
-                                            cout << "Nu poti face upgrade la abonamentul Premium. Ne pare rau!" << endl;
-                                            goto submeniu1;
+                                                    << "Ne pare rau ca nu mai doriti sa fiti abonatul nostru. Chiar daca nu mai sunteti abonat, tot puteti naviga prin optiunile noastre principale."
+                                                    << endl;
+                                            meniu_standard = false;
+                                            st = false;
+                                            break;
                                         }
+                                        case (1): {
+                                            cout << ab << endl;
+                                            break;
+                                        }
+                                        case (2): {
+                                            ab.getTipAbonament()->beneficii_abonament();
+                                            cout
+                                                    << "Vreti sa faceti upgrade la abonament premium?(Introduceti Da sau Nu)"
+                                                    << endl;
+                                            string s;
+                                            cin >> s;
+                                            if (s == "Da") {
+                                                ab.setTipAbonament("Premium");
+                                                if (ab.poate_cumpara_abonamentul_2() == true) {
+                                                    abonament *a = new abonament_premium(25, 2, {d1, d2}, 10);
+                                                    abonament_premium *ap1 = dynamic_cast<abonament_premium *>(a);
+                                                    ab.getTipAbonament()->upgrade_premium();
+                                                    cout
+                                                            << "Acestea sunt facilitatile dumneavoastra pentru abonamentul premium care costa "
+                                                            << ap1->pret_abonament() << " de lei, si unde veti primi "
+                                                            << a->getDiscuriPrimite() << " discuri." << endl;
+                                                    vector<string> f1 = ap1->facilitati();
+                                                    for (i = 0; i < f1.size(); i++)
+                                                        cout << "-" << f1[i] << endl;
+                                                    cout << endl;
+
+                                                    bool submeniu_standard = true;
+                                                    while (submeniu_standard) {
+                                                        cout << "Opiunile abonamentului premium:" << endl;
+                                                        cout << "0 -> Renuntare la card premium." << endl;
+                                                        cout
+                                                                << "1 -> Verificarea pretului fiecarul disc cu reducere aplicata."
+                                                                << endl;
+                                                        cout << "2 -> Gestionare discuri primite." << endl;
+
+                                                        int t;
+                                                        cin >> t;
+                                                        switch (t) {
+                                                            case (0): {
+                                                                submeniu_standard = false;
+                                                                break;
+                                                            }
+                                                            case (1): {
+                                                                for (i = 0; i < discuri_.size(); i++) {
+                                                                    cout << "Pentru " << discuri_[i].getNumeDisc()
+                                                                         << ", pretul dupa reducere este: "
+                                                                         << ap1->disc_cu_reducere(discuri_[i]) << "."
+                                                                         << endl;
+                                                                }
+                                                                cout << endl;
+                                                                break;
+                                                            }
+                                                            case (2): {
+                                                                cout << "Discurile pe care le primiti luna asta sunt:"
+                                                                     << endl;
+                                                                ap1->interogare_discuri_primite();
+                                                                break;
+                                                            }
+
+                                                        }
+                                                    }
+                                                } else {
+                                                    ab.setTipAbonament("Standard");
+                                                    cout << "Nu poti face upgrade la abonamentul Premium. Ne pare rau!"
+                                                         << endl;
+                                                    break;
+                                                }
+                                            }
+                                            break;
+                                        }
+
                                     }
-                                    goto submeniu1;
                                 }
+                            } else if (ab.get_tip_abonament() == "Premium") {
+                                abonament_premium apr(25, 2, {d1, d2}, 10);
+                                cout
+                                        << "Acestea sunt facilitatile dumneavoastra pentru abonamentul premium care costa "
+                                        << apr.pret_abonament() << " de lei, si unde veti primi "
+                                        << "doua discuri." << endl;
 
-                            }
-                        } else if (ab.get_tip_abonament() == "Premium") {
-                            abonament_premium apr(25, 2, {d1, d2}, 10);
-                            cout
-                                    << "Acestea sunt facilitatile dumneavoastra pentru abonamentul premium care costa "
-                                    << apr.pret_abonament() << " de lei, si unde veti primi "
-                                    << "doua discuri." << endl;
-
-                            submeniu2:
-
-                            cout << "Opiunile abonamentului premium:" << endl;
-                            cout << "0 -> Renuntare la abonament." << endl;
-                            cout << "1 -> Verificarea datelor dumneavoastra pe care noi le stocam." << endl;
-                            cout
-                                    << "2 -> Verificarea facilitatilor abonamentului premium si standard, pentru comparatie, sau pentru un downgrade la abonamentul standard in cazul in care doriti acest lucru."
-                                    << endl;
-
-                            int k2;
-                            cin >> k2;
-                            switch (k2) {
-                                case (0): {
+                                bool meniu_premium = true;
+                                while (meniu_premium) {
+                                    cout << "Opiunile abonamentului premium:" << endl;
+                                    cout << "0 -> Renuntare la abonament." << endl;
+                                    cout << "1 -> Verificarea datelor dumneavoastra pe care noi le stocam." << endl;
                                     cout
-                                            << "Ne pare rau ca nu mai doriti sa fiti abonatul nostru. Chiar daca nu mai sunteti abonat, tot puteti naviga prin optiunile noastre principale."
+                                            << "2 -> Verificarea facilitatilor abonamentului premium si standard, pentru comparatie, sau pentru un downgrade la abonamentul standard in cazul in care doriti acest lucru."
                                             << endl;
-                                    goto comezi_principale;
-                                }
-                                case (1): {
-                                    cout << apr << endl;
-                                    goto submeniu2;
-                                }
-                                case (2): {
-                                    ab.getTipAbonament()->beneficii_abonament();
-                                    cout << "Vreti sa faceti downgrade la abonament standard?(Introduceti Da sau Nu)"
-                                         << endl;
-                                    string s1;
-                                    cin >> s1;
-                                    if (s1 == "Da") {
 
-                                        ab.setTipAbonament("Standard");
-                                        goto standard;
+                                    int k2;
+                                    cin >> k2;
+                                    switch (k2) {
+                                        case (0): {
+                                            cout
+                                                    << "Ne pare rau ca nu mai doriti sa fiti abonatul nostru. Chiar daca nu mai sunteti abonat, tot puteti naviga prin optiunile noastre principale."
+                                                    << endl;
+                                            meniu_premium = false;
+                                            st = false;
+                                            break;
+                                        }
+                                        case (1): {
+                                            cout << apr << endl;
+                                            break;
+                                        }
+                                        case (2): {
+                                            ab.getTipAbonament()->beneficii_abonament();
+                                            cout
+                                                    << "Vreti sa faceti downgrade la abonament standard?(Introduceti Da sau Nu)"
+                                                    << endl;
+                                            string s1;
+                                            cin >> s1;
+                                            if (s1 == "Da") {
 
+                                                ab.setTipAbonament("Standard");
+                                                meniu_premium = false;
 
-                                    } else if (s1 == "Nu") {
-                                        goto submeniu2;
+                                            } else if (s1 == "Nu") {
+                                                break;
+                                            }
+                                        }
                                     }
                                 }
                             }
