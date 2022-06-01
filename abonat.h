@@ -2,13 +2,14 @@
 // Created by Simona on 4/19/2022.
 //
 
-#ifndef OOP_ABONAT_H
 #define OOP_ABONAT_H
 
 
 #include "abonament.h"
 #include "disc.h"
 #include "subscriptie.h"
+#include "abonamente_disponibile.h"
+#include "abonament_factory.h"
 #include <memory>
 #include <iostream>
 class abonat {
@@ -18,14 +19,21 @@ class abonat {
     std::shared_ptr<subscriptie> abon;
     std::string tip_abonament;
     std::string disc_dorit;
+    abonament_factory af;
 public:
-    abonat() =default;
+    abonat() {
+        buget_lunar=0;
+        tip_abonament="";
+        disc_dorit="";
+        abonament_factory a;
+        af = a;
+    }
 
     abonat(int bugetLunar, const std::string &tipAbonament, const std::string &discDorit);
 
     abonat(int bugetLunar, const std::string &tipAbonament);
 
-    virtual ~abonat();
+    ~abonat();
 
     friend std::ostream &operator<<(std::ostream &os, const abonat &abonat);
 
@@ -44,6 +52,8 @@ public:
     void setTipAbonament( const std::string& tip_abonament_);
 
     bool poate_cumpara_abonamentul_2();
+
+    void reducerea_abonamentului();
 };
 
-#endif //OOP_ABONAT_H
+

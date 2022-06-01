@@ -12,6 +12,8 @@ abonat::abonat(int bugetLunar, const std::string &tipAbonament, const std::strin
     }
     abonat::incrementeaza_id_abonat();
     id = id_abonat;
+    abonament_factory a;
+    af = a;
 
 }
 
@@ -23,7 +25,8 @@ abonat::abonat(int bugetLunar, const std::string &tipAbonament) : buget_lunar(bu
     }
     abonat::incrementeaza_id_abonat();
     id = id_abonat;
-
+    abonament_factory a;
+    af = a;
 }
 
 
@@ -48,7 +51,7 @@ std::istream &operator>>(std::istream &is, abonat &abonat) {
     std::cout<<"Bugetul: ";
     is>>abonat.buget_lunar;
     std::cout<<std::endl;
-    std::cout<<"Abonamentul dorit: ";
+    std::cout<<"Abonamentul dorit(Standard, Premium sau Redus): ";
     is>>abonat.tip_abonament;
     std::cout<<std::endl;
     if(abonat.tip_abonament == "Premium")
@@ -109,11 +112,7 @@ bool abonat::poate_cumpara_abonamentul() {
     return false;
 }
 
-int abonat::id_abonat = 0;
 
-void abonat::incrementeaza_id_abonat() {
-    id_abonat += 1;
-}
 
 
 
@@ -134,6 +133,29 @@ bool abonat::poate_cumpara_abonamentul_2() {
         return false;
 }
 
+int abonat::id_abonat = 0;
+
+void abonat::incrementeaza_id_abonat() {
+    id_abonat += 1;
+}
+
+void abonat::reducerea_abonamentului() {
+    std::cout<<"Alegeti ce tip de reducere vi se potriveste (elev, student, pensionar):"<<std::endl;
+    std::string alegere;
+    std::cin>>alegere;
+    if(alegere!="elev" && alegere!="student" && alegere!="pensionar")
+    {
+        std::cout<<"Nu ati ales o varianta valida!"<<std::endl;
+        return;
+    }
+    else{
+        abonamente_reduse *a = af.newAbon(alegere);
+        int c=a->pret_abonament_redus();
+        std::cout<<"Pretul abonamentului de "<<alegere<<" este de "<<c<<" lei."<<std::endl;
+        std::cout<<"Mai jos puteti observa daca sunteti eligibil pentru abonamentul dorit, iar in caz afirmativ se va afisa perioada de reducere."<<std::endl;
+        a->perioada_reducere();
+    }
+}
 
 
 

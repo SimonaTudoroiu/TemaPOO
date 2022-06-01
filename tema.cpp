@@ -11,6 +11,9 @@
 #include "abonament_premium.h"
 #include "abonat.h"
 #include "eroare_aplicatie.h"
+#include "sortare_discuri.h"
+#include "sortare_crescatoare.h"
+#include "sortare_descrescatoare.h"
 
 using namespace std;
 
@@ -97,9 +100,11 @@ int main()
         cout<<"6 -> Clasamentul trupelor."<<endl;
         cout<<"7 -> Pot cumpara clientii introdusi in baza de date discul dorit?"<<endl;
         cout<<"8 -> Existenta unui disc cu anumite piese."<<endl;
-        cout<<"9 -> Vreti sa deveniti abonatul nostru? Sunteti pasionat de muzica si vreti sa primiti lunar unul sau mai multe discuri direct la voi acasa la un pret redus? Atunci aruncati o privire la facilitatile fiecarui abonament!"<<endl;
-        cout<<"10 -> V-ati hotarat si vreti sa deveniti abonatul nostru? Atunci va rugam sa va introduceti datele cerute pentru a va putea inregistra. In cazul in care optati pentru un abonament premium, va rugam sa introduceti si discul ales pe care vreti sa il primiti."<<endl;
-
+        cout<<"9 -> Sortarea discurilor crescator dupa an."<<endl;
+        cout<<"10 -> Sortarea discurilor descrescator dupa an."<<endl;
+        cout<<"11 -> Vreti sa deveniti abonatul nostru? Sunteti pasionat de muzica si vreti sa primiti lunar unul sau mai multe discuri direct la voi acasa la un pret redus? Atunci aruncati o privire la facilitatile fiecarui abonament!"<<endl;
+        cout<<"12 -> V-ati hotarat si vreti sa deveniti abonatul nostru? Atunci va rugam sa va introduceti datele cerute pentru a va putea inregistra. In cazul in care optati pentru un abonament premium, va rugam sa introduceti si discul ales pe care vreti sa il primiti."<<endl;
+        cout<<"13 -> Sunteti elev, student sau pensionar? Avem abonamente la preturi speciale pentru dumneavoastra!"<<endl;
         int k;
         cout<<endl<<"Introduceti numarul dorit: ";
         cin>>k;
@@ -172,7 +177,23 @@ int main()
                 c1.exista_discul(piese_preferate1);
                 break;
             }
-            case 9: {
+            case 9:{
+                sortare_discuri *sd = new sortare_discuri( new sortare_crescatoare(discuri_));
+                cout<<"Discurile sortate crescator:"<<endl;
+                sd->do_sort();
+                cout<<endl;
+                delete sd;
+                break;
+            }
+            case 10 :{
+                sortare_discuri *sd = new sortare_discuri( new sortare_descrescatoare(discuri_));
+                cout<<"Discurile sortate descrescator:"<<endl;
+                sd->do_sort();
+                cout<<endl;
+                delete sd;
+                break;
+            }
+            case 11: {
                 cout << "Facilitatile abonamentului standard:" << endl;
                 vector<string> v = as.facilitati();
                 for (i = 0; i < v.size(); i++)
@@ -183,10 +204,30 @@ int main()
                     cout << v[i] << endl;
                 break;
             }
-            case 10: {
+            case 12: {
                 try {
                     abonat ab;
                     cin >> ab;
+                    if(ab.get_tip_abonament()=="Standard"){
+                        abonament_standard as_(15, 1, d1);
+                        abonamente_disponibile ad(as_);
+                        cout<<"Pret pentru standard: "<<ad.pret_pe_luna<abonament_standard>(as_)<<endl;
+                        ad.gestioneaza_abonamentele();
+                        if(ad.nu_mai_exista() == true)
+                            cout<<"Din fericire, mai exista abonamente standard!!"<<endl;
+                        else if(ad.nu_mai_exista() == false)
+                            break;
+                    }
+                    if(ab.get_tip_abonament()=="Premium"){
+                        abonament_premium ap_(25, 2, {d1, d2}, 10);
+                        abonamente_disponibile ad(ap_);
+                        cout<<"Pret pentru premium: "<<ad.pret_pe_luna<abonament_premium>(ap_)<<endl;
+                        ad.gestioneaza_abonamentele();
+                        if(ad.nu_mai_exista() == true)
+                            cout<<"Din fericire, mai exista abonamente premium!!"<<endl;
+                        else if(ad.nu_mai_exista() == false)
+                            break;
+                    }
                     if (ab.poate_cumpara_abonamentul() == false) {
                         cout << endl;
                         break;
@@ -353,8 +394,19 @@ int main()
                 }
                 catch (eroare_aplicatie& err){
                     cout<<err.what();
-
                 }
+            }
+            case 13:{
+                abonat a ;
+                cin>>a;
+                if(a.get_tip_abonament()=="Redus")
+                {
+                    a.reducerea_abonamentului();
+                }
+                else{
+                    cout<<"Sunteti in ramura abonamentelor reduse!"<<endl;
+                }
+                break;
             }
         }
     }
