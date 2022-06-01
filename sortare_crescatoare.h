@@ -12,7 +12,7 @@
 class sortare_crescatoare : public strategy {
     std::vector<disc> d;
 public:
-    sortare_crescatoare(const std::vector<disc> &d) : d(d) {}
+    explicit sortare_crescatoare(const std::vector<disc> &d) : d(d) {}
 
     std::string sortarea() override  {
         std::string rezultat;

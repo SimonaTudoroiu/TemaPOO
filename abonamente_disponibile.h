@@ -14,7 +14,7 @@ class abonamente_disponibile {
     static int a_p;
     static int a_s;
 public:
-    abonamente_disponibile(T a_) : a(a_) {}
+    explicit abonamente_disponibile(T a_) : a(a_) {}
 
     static void decrementeaza_a_p(){
         a_p -=1;

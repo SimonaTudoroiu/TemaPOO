@@ -22,6 +22,7 @@ class abonat {
     abonament_factory af;
 public:
     abonat() {
+        id=0;
         buget_lunar=0;
         tip_abonament="";
         disc_dorit="";

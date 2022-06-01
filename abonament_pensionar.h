@@ -17,7 +17,7 @@ public:
 
     virtual ~abonament_pensionar();
 
-    abonament_pensionar(int anPensionare);
+    explicit abonament_pensionar(int anPensionare);
 
     int pret_abonament_redus() override;
 
