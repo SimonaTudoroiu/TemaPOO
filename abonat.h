@@ -21,14 +21,7 @@ class abonat {
     std::string disc_dorit;
     abonament_factory af;
 public:
-    abonat() {
-        id=0;
-        buget_lunar=0;
-        tip_abonament="";
-        disc_dorit="";
-        abonament_factory a;
-        af = a;
-    }
+    abonat() =default;
 
     abonat(int bugetLunar, const std::string &tipAbonament, const std::string &discDorit);
 
